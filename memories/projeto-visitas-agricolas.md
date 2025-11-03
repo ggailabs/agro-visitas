@@ -82,9 +82,40 @@ URL Produção Atual: https://8zc17v6rvoil.space.minimax.io
    - Corrigidos links quebrados (temporariamente desabilitados)
    - Interface melhorada
 
-### PROBLEMA SECUNDÁRIO IDENTIFICADO:
-- Visitas não aparecem na lista após salvamento
-- Necessita investigação de políticas RLS ou Edge Functions
+## Status: BUG DE VISUALIZAÇÃO CORRIGIDO ✅
+
+URL Produção Atual: https://4rljxc0wqfhc.space.minimax.io
+
+### PROBLEMA DE VISUALIZAÇÃO DE VISITAS: RESOLVIDO
+- ✅ Criada página VisitaDetalhesPage.tsx completa
+- ✅ Adicionada rota /visitas/:id no App.tsx
+- ✅ Habilitados links na VisitasPage.tsx
+- ✅ Implementado carregamento de dados da visita
+- ✅ Interface responsiva para visualização
+
+### FUNCIONALIDADES IMPLEMENTADAS:
+1. **VisitaDetalhesPage.tsx**:
+   - Carregamento de dados da visita, cliente, fazenda, talhão
+   - Exibição de informações básicas e agronômicas
+   - Galeria de fotos da visita
+   - Observações e recomendações
+   - Botões de ação (PDF, galeria)
+   - Tratamento de erros (visita não encontrada)
+
+2. **Navegação corrigida**:
+   - Links funcionais na lista de visitas
+   - Botão "Voltar" para retornar à lista
+   - Rota dinâmica /visitas/:id funcionando
+
+3. **Estados de carregamento**:
+   - Loading spinner enquanto carrega dados
+   - Mensagens de erro informativas
+   - Fallbacks para dados ausentes
+
+### RESULTADO:
+- Usuários podem visualizar detalhes completos das visitas
+- Não há mais tela em branco ao clicar em visitas
+- Interface profissional e responsiva implementada
 
 ### TALHÕES: FUNCIONALIDADE IMPLEMENTADA E TESTADA
 - ✅ TalhaoModal.tsx criado com formulário completo

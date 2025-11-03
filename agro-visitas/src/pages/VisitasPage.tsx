@@ -152,13 +152,10 @@ export default function VisitasPage() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredVisitas.map((visita) => (
-            <div
+            <Link
               key={visita.id}
-              className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer"
-              onClick={() => {
-                // TODO: Implementar navegação para página de detalhes da visita
-                console.log('Detalhes da visita:', visita.id);
-              }}
+              to={`/visitas/${visita.id}`}
+              className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between mb-4">
                 <h3 className="font-semibold text-lg text-gray-900">{visita.titulo}</h3>
@@ -203,7 +200,7 @@ export default function VisitasPage() {
               {visita.resumo && (
                 <p className="mt-4 text-sm text-gray-600 line-clamp-2">{visita.resumo}</p>
               )}
-            </div>
+            </Link>
           ))}
         </div>
       )}

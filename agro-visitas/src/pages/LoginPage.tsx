@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Sprout } from 'lucide-react';
+import { Sprout, Info } from 'lucide-react';
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,6 +12,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
+
+  function fillDemoCredentials() {
+    setEmail('demo@agrovisitas.com');
+    setPassword('demo123456');
+    setIsLogin(true);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -35,6 +41,31 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-green-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        {/* Banner de Credenciais Demo */}
+        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-blue-900 mb-2">
+                🎯 Acesso Rápido para Demonstração
+              </p>
+              <div className="space-y-1 text-sm text-blue-800">
+                <p><strong>Email:</strong> demo@agrovisitas.com</p>
+                <p><strong>Senha:</strong> demo123456</p>
+              </div>
+              <button
+                onClick={fillDemoCredentials}
+                className="mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+              >
+                Usar Credenciais Demo
+              </button>
+              <p className="text-xs text-blue-700 mt-3">
+                💡 Novos usuários: acesso imediato após registro (sem confirmação de email)
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="flex justify-center mb-8">
             <div className="p-3 bg-green-600 rounded-xl">

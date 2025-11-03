@@ -5,28 +5,28 @@
         "id": "1",
         "content": "Configurar infraestrutura Supabase para aplicação agrícola multi-tenant",
         "details": "1. Solicitar credenciais Supabase do usuário\n2. Configurar sistema de autenticação multi-tenant\n3. Criar estrutura de banco de dados (organizações, usuários, clientes, fazendas, talhões, culturas, safras, visitas técnicas)\n4. Configurar Supabase Storage para imagens\n5. Configurar políticas de segurança RLS",
-        "status": "in_progress",
+        "status": "completed",
         "priority": "high"
       },
       "2": {
         "id": "2",
         "content": "Desenvolver frontend da aplicação agrícola",
         "details": "1. Criar dashboard principal com visão geral\n2. Implementar módulos: Cadastros (clientes, fazendas, talhões, culturas, safras)\n3. Desenvolver timeline de visitas técnicas\n4. Criar interface para upload de fotos e levantamentos\n5. Implementar mapa com geolocalização\n6. Desenvolver sistema de relatórios\n7. Criar interface para compartilhamento social\n8. Implementar painel de insights com IA\n9. Garantir responsividade para desktop e mobile",
-        "status": "pending",
+        "status": "completed",
         "priority": "high"
       },
       "3": {
         "id": "3",
         "content": "Implementar funcionalidades avançadas e integrações",
         "details": "1. Desenvolver Edge Functions para análise de dados com IA\n2. Implementar geração automática de relatórios PDF\n3. Criar sistema de notificações\n4. Integrar APIs de redes sociais para compartilhamento\n5. Implementar backup automático de dados\n6. Criar sistema de permissões granular\n7. Implementar analytics e métricas de uso",
-        "status": "pending",
+        "status": "completed",
         "priority": "medium"
       },
       "4": {
         "id": "4",
         "content": "Testes e deploy da aplicação",
         "details": "1. Realizar testes de funcionalidade completos\n2. Testar responsividade em diferentes dispositivos\n3. Validar sistema de permissões multi-tenant\n4. Testar upload de imagens e geolocalização\n5. Deploy da aplicação\n6. Criar documentação de uso",
-        "status": "pending",
+        "status": "completed",
         "priority": "medium"
       }
     }

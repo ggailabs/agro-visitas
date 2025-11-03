@@ -5,7 +5,7 @@
         "id": "1",
         "content": "Configurar infraestrutura Supabase para aplicação agrícola multi-tenant",
         "details": "1. Solicitar credenciais Supabase do usuário\n2. Configurar sistema de autenticação multi-tenant\n3. Criar estrutura de banco de dados (organizações, usuários, clientes, fazendas, talhões, culturas, safras, visitas técnicas)\n4. Configurar Supabase Storage para imagens\n5. Configurar políticas de segurança RLS",
-        "status": "pending",
+        "status": "in_progress",
         "priority": "high"
       },
       "2": {

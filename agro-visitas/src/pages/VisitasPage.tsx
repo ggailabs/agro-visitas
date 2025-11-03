@@ -2,15 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { VisitaTecnica } from '../types/database';
-import { Plus, Search, Calendar, MapPin, User } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Plus, Search, Calendar, MapPin, User, CheckCircle, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function VisitasPage() {
   const { organization } = useAuth();
+  const location = useLocation();
   const [visitas, setVisitas] = useState<VisitaTecnica[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('todas');
+  const [successMessage, setSuccessMessage] = useState<string>('');
+
+  useEffect(() => {
+    if (organization) {
+      loadVisitas();
+    }
+  }, [organization]);
+
+  useEffect(() => {
+    // Verificar se há mensagem de sucesso no state
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message);
+      // Limpar o state para evitar mostrar a mensagem novamente
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   useEffect(() => {
     if (organization) {
@@ -55,6 +72,22 @@ export default function VisitasPage() {
 
   return (
     <div className="space-y-6">
+      {/* Mensagem de Sucesso */}
+      {successMessage && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <span className="text-green-800 font-medium">{successMessage}</span>
+          </div>
+          <button
+            onClick={() => setSuccessMessage('')}
+            className="text-green-600 hover:text-green-800"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      )}
+
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Visitas Técnicas</h1>
@@ -119,10 +152,13 @@ export default function VisitasPage() {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredVisitas.map((visita) => (
-            <Link
+            <div
               key={visita.id}
-              to={`/visitas/${visita.id}`}
-              className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow"
+              className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => {
+                // TODO: Implementar navegação para página de detalhes da visita
+                console.log('Detalhes da visita:', visita.id);
+              }}
             >
               <div className="flex items-start justify-between mb-4">
                 <h3 className="font-semibold text-lg text-gray-900">{visita.titulo}</h3>
@@ -167,7 +203,7 @@ export default function VisitasPage() {
               {visita.resumo && (
                 <p className="mt-4 text-sm text-gray-600 line-clamp-2">{visita.resumo}</p>
               )}
-            </Link>
+            </div>
           ))}
         </div>
       )}

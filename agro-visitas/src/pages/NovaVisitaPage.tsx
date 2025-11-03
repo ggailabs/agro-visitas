@@ -138,7 +138,21 @@ export default function NovaVisitaPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!organization || !user) return;
+    if (!organization || !user) {
+      setError('Erro de autenticação. Tente fazer login novamente.');
+      return;
+    }
+
+    // Validações básicas
+    if (!formData.cliente_id) {
+      setError('Por favor, selecione um cliente.');
+      return;
+    }
+
+    if (!formData.titulo.trim()) {
+      setError('Por favor, informe o título da visita.');
+      return;
+    }
 
     setLoading(true);
     setError('');
@@ -147,12 +161,14 @@ export default function NovaVisitaPage() {
       // Criar visita
       const visitaData = {
         ...formData,
-        temperatura: formData.temperatura ? parseFloat(formData.temperatura) : null,
+        temperatura: formData.temperatura ? parseFloat(formData.temperatura.toString()) : null,
         organization_id: organization.id,
         tecnico_responsavel_id: user.id,
         created_by: user.id,
         is_public: false,
       };
+
+      console.log('Criando visita com dados:', visitaData);
 
       const { data: visitaCreated, error: visitaError } = await supabase
         .from('visitas_tecnicas')
@@ -160,20 +176,44 @@ export default function NovaVisitaPage() {
         .select()
         .single();
 
-      if (visitaError) throw visitaError;
-
-      // Upload de fotos se houver
-      if (selectedPhotos.length > 0 && visitaCreated) {
-        await uploadMultiplePhotos(selectedPhotos, {
-          visitaId: visitaCreated.id,
-          organizationId: organization.id,
-        });
+      if (visitaError) {
+        console.error('Erro ao criar visita:', visitaError);
+        throw new Error(`Erro ao salvar visita: ${visitaError.message}`);
       }
 
-      // Redirecionar para a visita criada
-      navigate(`/visitas/${visitaCreated.id}`);
+      if (!visitaCreated) {
+        throw new Error('Visita criada mas dados não retornados');
+      }
+
+      console.log('Visita criada com sucesso:', visitaCreated);
+
+      // Upload de fotos se houver
+      if (selectedPhotos.length > 0) {
+        try {
+          console.log(`Iniciando upload de ${selectedPhotos.length} foto(s)...`);
+          await uploadMultiplePhotos(selectedPhotos, {
+            visitaId: visitaCreated.id,
+            organizationId: organization.id,
+          });
+          console.log('Upload de fotos concluído');
+        } catch (uploadError) {
+          console.error('Erro no upload de fotos:', uploadError);
+          // Não impedir o sucesso da visita por erro no upload
+          setError(`Visita criada, mas houve problema no upload de fotos: ${uploadError.message}`);
+        }
+      }
+
+      // Redirecionar para a lista de visitas com mensagem de sucesso
+      console.log('Redirecionando para lista de visitas...');
+      navigate('/visitas', { 
+        state: { 
+          message: 'Visita técnica criada com sucesso!',
+          visitaId: visitaCreated.id 
+        } 
+      });
     } catch (err: any) {
-      setError(err.message || 'Erro ao criar visita');
+      console.error('Erro completo no handleSubmit:', err);
+      setError(err.message || 'Erro inesperado ao criar visita. Tente novamente.');
     } finally {
       setLoading(false);
     }

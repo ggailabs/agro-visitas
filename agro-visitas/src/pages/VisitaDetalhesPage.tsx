@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { VisitaTecnica, VisitaFoto, Cliente, Fazenda, Talhao } from '../types/database';
+import FotoModal from '../components/FotoModal';
 import { 
   ArrowLeft, 
   Calendar, 
@@ -28,6 +29,10 @@ export default function VisitaDetalhesPage() {
   const [cliente, setCliente] = useState<Cliente | null>(null);
   const [fazenda, setFazenda] = useState<Fazenda | null>(null);
   const [talhao, setTalhao] = useState<Talhao | null>(null);
+  
+  // Estados para o modal de fotos
+  const [fotoModalOpen, setFotoModalOpen] = useState(false);
+  const [fotoAtual, setFotoAtual] = useState(0);
 
   useEffect(() => {
     if (id && organization) {
@@ -108,6 +113,26 @@ export default function VisitaDetalhesPage() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function abrirFoto(index: number) {
+    setFotoAtual(index);
+    setFotoModalOpen(true);
+  }
+
+  function abrirGaleria() {
+    if (fotos.length > 0) {
+      setFotoAtual(0);
+      setFotoModalOpen(true);
+    }
+  }
+
+  function fecharModal() {
+    setFotoModalOpen(false);
+  }
+
+  function trocarFoto(index: number) {
+    setFotoAtual(index);
   }
 
   if (loading) {
@@ -339,7 +364,7 @@ export default function VisitaDetalhesPage() {
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {fotos.map((foto) => (
+            {fotos.map((foto, index) => (
               <div key={foto.id} className="group relative">
                 <img
                   src={foto.url}
@@ -348,8 +373,9 @@ export default function VisitaDetalhesPage() {
                 />
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all rounded-lg flex items-center justify-center">
                   <button
-                    onClick={() => window.open(foto.url, '_blank')}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity p-2 bg-white text-gray-900 rounded-full"
+                    onClick={() => abrirFoto(index)}
+                    className="opacity-0 group-hover:opacity-100 transition-opacity p-2 bg-white text-gray-900 rounded-full hover:bg-gray-100"
+                    title="Ver foto"
                   >
                     <Eye className="w-4 h-4" />
                   </button>
@@ -379,10 +405,7 @@ export default function VisitaDetalhesPage() {
           
           {fotos.length > 0 && (
             <button
-              onClick={() => {
-                // TODO: Implementar visualização em galeria
-                console.log('Abrir galeria de fotos');
-              }}
+              onClick={abrirGaleria}
               className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
             >
               <Camera className="w-4 h-4" />
@@ -391,6 +414,15 @@ export default function VisitaDetalhesPage() {
           )}
         </div>
       </div>
+
+      {/* Modal de Fotos */}
+      <FotoModal
+        fotos={fotos}
+        fotoAtual={fotoAtual}
+        isOpen={fotoModalOpen}
+        onClose={fecharModal}
+        onFotoChange={trocarFoto}
+      />
     </div>
   );
 }

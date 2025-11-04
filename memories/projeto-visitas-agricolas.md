@@ -405,6 +405,20 @@ Status: IMPLEMENTAÇÃO CONCLUÍDA
 ✅ Testes: Aplicação acessível e funcional
 ✅ Status: PROJETO CONCLUÍDO
 
+### NOVA FUNCIONALIDADE: Sidebar Colapsavel
+Data: 2025-11-05 00:06
+✅ Toggle de colapso implementado
+✅ Animações suaves (300ms ease-out)
+✅ Persistência em localStorage
+✅ Keyboard support (ESC)
+✅ Auto-fechar mobile ao navegar
+✅ Estados visuais claros (collapsed/expanded)
+✅ Ícones centralizados quando colapsado
+✅ Tooltips nos itens colapsados
+✅ Avatar e logout adaptados
+✅ Build: 13.75s
+✅ Deploy: https://9s12jo5l29nb.space.minimax.io
+
 ### Score Final UI/UX:
 - Design Visual: 9/10 (+50%)
 - Micro-interações: 9/10 (+125%)

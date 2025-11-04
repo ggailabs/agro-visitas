@@ -3,30 +3,23 @@
     "Coordinator": {
       "1": {
         "id": "1",
-        "content": "Configurar infraestrutura Supabase para aplicação agrícola multi-tenant",
-        "details": "1. Solicitar credenciais Supabase do usuário\n2. Configurar sistema de autenticação multi-tenant\n3. Criar estrutura de banco de dados (organizações, usuários, clientes, fazendas, talhões, culturas, safras, visitas técnicas)\n4. Configurar Supabase Storage para imagens\n5. Configurar políticas de segurança RLS",
-        "status": "completed",
+        "content": "Analisar UI/UX atual da plataforma agrícola",
+        "details": "1. Revisar navegação e layout atual. 2. Identificar problemas de usabilidade. 3. Avaliar design system e consistência. 4. Analisar responsividade e mobile experience. 5. Verificar performance visual e loading states.",
+        "status": "pending",
         "priority": "high"
       },
       "2": {
         "id": "2",
-        "content": "Desenvolver frontend da aplicação agrícola",
-        "details": "1. Criar dashboard principal com visão geral\n2. Implementar módulos: Cadastros (clientes, fazendas, talhões, culturas, safras)\n3. Desenvolver timeline de visitas técnicas\n4. Criar interface para upload de fotos e levantamentos\n5. Implementar mapa com geolocalização\n6. Desenvolver sistema de relatórios\n7. Criar interface para compartilhamento social\n8. Implementar painel de insights com IA\n9. Garantir responsividade para desktop e mobile",
-        "status": "completed",
+        "content": "Propor melhorias específicas de UI/UX",
+        "details": "1. Identificar pontos críticos de fricção. 2. Propor soluções de design. 3. Criar especificações técnicas. 4. Priorizar implementações por impacto.",
+        "status": "pending",
         "priority": "high"
       },
       "3": {
         "id": "3",
-        "content": "Implementar funcionalidades avançadas e integrações",
-        "details": "1. Desenvolver Edge Functions para análise de dados com IA\n2. Implementar geração automática de relatórios PDF\n3. Criar sistema de notificações\n4. Integrar APIs de redes sociais para compartilhamento\n5. Implementar backup automático de dados\n6. Criar sistema de permissões granular\n7. Implementar analytics e métricas de uso",
-        "status": "completed",
-        "priority": "medium"
-      },
-      "4": {
-        "id": "4",
-        "content": "Testes e deploy da aplicação",
-        "details": "1. Realizar testes de funcionalidade completos\n2. Testar responsividade em diferentes dispositivos\n3. Validar sistema de permissões multi-tenant\n4. Testar upload de imagens e geolocalização\n5. Deploy da aplicação\n6. Criar documentação de uso",
-        "status": "completed",
+        "content": "Implementar melhorias de UI/UX priorizadas",
+        "details": "1. Redesign de navegação e layout. 2. Melhorias de componentes. 3. Otimização mobile. 4. Testes de usabilidade.",
+        "status": "pending",
         "priority": "medium"
       }
     }

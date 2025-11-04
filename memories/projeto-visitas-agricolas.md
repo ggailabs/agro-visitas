@@ -419,6 +419,18 @@ Data: 2025-11-05 00:06
 ✅ Build: 13.75s
 ✅ Deploy: https://9s12jo5l29nb.space.minimax.io
 
+**MELHORIA: Toggle Reposicionado**
+Data: 2025-11-05 00:18
+✅ Botao reposicionado ao lado do logo
+✅ Estado expandido: botao ao lado direito do header
+✅ Estado colapsado: botao floating sobre barra de divisao
+✅ Posicionamento absoluto (-right-3) quando colapsado
+✅ Shadow e border elegantes
+✅ Hover effects melhorados
+✅ Alinhamento vertical perfeito com logo
+✅ Build: 13.45s
+✅ Deploy: https://ba3atvc8mpmf.space.minimax.io
+
 ### Score Final UI/UX:
 - Design Visual: 9/10 (+50%)
 - Micro-interações: 9/10 (+125%)

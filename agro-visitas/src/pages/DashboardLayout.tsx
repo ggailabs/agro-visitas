@@ -175,34 +175,44 @@ export default function DashboardLayout() {
         }`}
       >
         <div className="flex flex-col flex-1 min-h-0 bg-white border-r border-gray-200 shadow-soft">
-          {/* Desktop Header */}
-          <div className={`flex items-center gap-4 p-6 border-b border-gray-100 transition-all duration-300 ${
-            sidebarCollapsed ? 'justify-center' : ''
-          }`}>
-            <div className="p-3 bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl shadow-soft flex-shrink-0">
-              <Sprout className="w-8 h-8 text-white" />
-            </div>
-            {!sidebarCollapsed && (
-              <div className="flex-1 min-w-0 animate-fade-in">
-                <h1 className="text-xl font-bold text-gray-900 truncate">Agro Visitas</h1>
-                <p className="text-sm text-gray-600 truncate">{organization?.name || 'Sistema'}</p>
+          {/* Desktop Header com Toggle */}
+          <div className="relative flex items-center justify-between p-6 border-b border-gray-100 transition-all duration-300">
+            {/* Logo e Nome */}
+            <div className={`flex items-center gap-4 transition-all duration-300 ${
+              sidebarCollapsed ? 'justify-center w-full' : 'flex-1'
+            }`}>
+              <div className="p-3 bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl shadow-soft flex-shrink-0">
+                <Sprout className="w-8 h-8 text-white" />
               </div>
-            )}
-          </div>
-
-          {/* Toggle Button */}
-          <div className={`p-4 border-b border-gray-100 ${sidebarCollapsed ? 'flex justify-center' : 'flex justify-end'}`}>
-            <button
-              onClick={toggleCollapse}
-              className="group p-2 hover:bg-gray-100 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95"
-              title={sidebarCollapsed ? 'Expandir sidebar' : 'Colapsar sidebar'}
-            >
-              {sidebarCollapsed ? (
-                <PanelLeft className="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition-colors" />
-              ) : (
-                <PanelLeftClose className="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition-colors" />
+              {!sidebarCollapsed && (
+                <div className="flex-1 min-w-0 animate-fade-in">
+                  <h1 className="text-xl font-bold text-gray-900 truncate">Agro Visitas</h1>
+                  <p className="text-sm text-gray-600 truncate">{organization?.name || 'Sistema'}</p>
+                </div>
               )}
-            </button>
+            </div>
+
+            {/* Toggle Button - Sempre visivel ao lado do logo */}
+            {!sidebarCollapsed && (
+              <button
+                onClick={toggleCollapse}
+                className="group p-2 hover:bg-gray-100 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95 flex-shrink-0 ml-2"
+                title="Colapsar sidebar"
+              >
+                <PanelLeftClose className="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition-colors" />
+              </button>
+            )}
+
+            {/* Toggle Button para estado colapsado - posicionado sobre a barra */}
+            {sidebarCollapsed && (
+              <button
+                onClick={toggleCollapse}
+                className="absolute -right-3 top-1/2 -translate-y-1/2 group p-2 bg-white hover:bg-primary-50 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95 shadow-soft border border-gray-200 hover:border-primary-300"
+                title="Expandir sidebar"
+              >
+                <PanelLeft className="w-4 h-4 text-gray-600 group-hover:text-primary-600 transition-colors" />
+              </button>
+            )}
           </div>
 
           {/* Desktop Navigation */}

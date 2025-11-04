@@ -3,23 +3,30 @@
     "Coordinator": {
       "1": {
         "id": "1",
-        "content": "Analisar UI/UX atual da plataforma agrícola",
-        "details": "1. Revisar navegação e layout atual. 2. Identificar problemas de usabilidade. 3. Avaliar design system e consistência. 4. Analisar responsividade e mobile experience. 5. Verificar performance visual e loading states.",
-        "status": "completed",
+        "content": "Analisar campos necessários por área técnica",
+        "details": "1. Definir campos para Análise de Solo (pH, macro/micronutrientes, textura, etc). 2. Mapear campos para Relatórios Técnicos (recomendações, observações, procedimentos). 3. Identificar campos para Monitoramento de Cultura (estágio fenológico, pragas, doenças, etc). 4. Definir campos para Colheita/Produção (dados quantitativos, qualidade, etc). 5. Mapear campos para Eventos Climáticos (chuva, temperatura, geada, etc).",
+        "status": "pending",
         "priority": "high"
       },
       "2": {
         "id": "2",
-        "content": "Propor melhorias específicas de UI/UX",
-        "details": "1. Identificar pontos críticos de fricção. 2. Propor soluções de design. 3. Criar especificações técnicas. 4. Priorizar implementações por impacto.",
-        "status": "completed",
+        "content": "Redesign da estrutura do banco de dados",
+        "details": "1. Criar tabelas especializadas (analise_solo, relatorio_tecnico, monitoramento_cultura, etc). 2. Atualizar relacionamentos entre tabelas. 3. Implementar campos customizáveis para diferentes tipos de dados. 4. Criar migração de dados existentes. 5. Atualizar edge functions para novos tipos de dados.",
+        "status": "pending",
         "priority": "high"
       },
       "3": {
         "id": "3",
-        "content": "Implementar melhorias de UI/UX priorizadas",
-        "details": "1. Redesign de navegação e layout. 2. Melhorias de componentes. 3. Otimização mobile. 4. Testes de usabilidade.",
-        "status": "completed",
+        "content": "Implementar interfaces específicas por área",
+        "details": "1. Criar formulários especializados para cada tipo de análise. 2. Implementar componentes de entrada de dados técnicos. 3. Desenvolver visualizações específicas (gráficos, tabelas, indicadores). 4. Integrar com timeline existente. 5. Criar templates de relatórios por área.",
+        "status": "pending",
+        "priority": "medium"
+      },
+      "4": {
+        "id": "4",
+        "content": "Expandir sistema de relatórios e insights IA",
+        "details": "1. Integrar análise de solo com recomendações IA. 2. Gerar insights baseados em monitoramento de cultura. 3. Criar relatórios técnicos automáticos. 4. Implementar alertas baseados em dados. 5. Desenvolver dashboard especializado.",
+        "status": "pending",
         "priority": "medium"
       }
     }

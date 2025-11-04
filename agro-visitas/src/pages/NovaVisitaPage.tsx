@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { usePhotoUpload } from '../hooks/usePhotoUpload';
@@ -8,8 +8,12 @@ import { Camera, Upload, X, MapPin, Calendar } from 'lucide-react';
 
 export default function NovaVisitaPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { organization, user } = useAuth();
   const { uploadMultiplePhotos, uploading, uploadProgress } = usePhotoUpload();
+
+  // Parâmetros vindos da timeline (via state)
+  const { fazendaId, clienteId } = location.state || {};
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -20,8 +24,8 @@ export default function NovaVisitaPage() {
   const [photoPreviews, setPhotoPreviews] = useState<string[]>([]);
 
   const [formData, setFormData] = useState({
-    cliente_id: '',
-    fazenda_id: '',
+    cliente_id: clienteId || '',
+    fazenda_id: fazendaId || '',
     talhao_id: '',
     titulo: '',
     data_visita: new Date().toISOString().split('T')[0],
@@ -43,8 +47,12 @@ export default function NovaVisitaPage() {
   useEffect(() => {
     if (organization) {
       loadClientes();
+      // Se clienteId foi passado via state, carregar fazendas automaticamente
+      if (clienteId) {
+        loadFazendas(clienteId);
+      }
     }
-  }, [organization]);
+  }, [organization, clienteId]);
 
   useEffect(() => {
     if (formData.cliente_id) {

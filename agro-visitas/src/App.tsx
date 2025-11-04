@@ -10,6 +10,7 @@ import NovaVisitaPage from './pages/NovaVisitaPage';
 import VisitaDetalhesPage from './pages/VisitaDetalhesPage';
 import FazendasPage from './pages/FazendasPage';
 import TalhoesPage from './pages/TalhoesPage';
+import TimelinePage from './pages/TimelinePage';
 import RelatoriosPage from './pages/RelatoriosPage';
 import InsightsPage from './pages/InsightsPage';
 
@@ -43,6 +44,7 @@ function AppRoutes() {
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="clientes" element={<ClientesPage />} />
         <Route path="fazendas" element={<FazendasPage />} />
+        <Route path="fazendas/:id/timeline" element={<TimelinePage />} />
         <Route path="talhoes" element={<TalhoesPage />} />
         <Route path="visitas" element={<VisitasPage />} />
         <Route path="visitas/nova" element={<NovaVisitaPage />} />

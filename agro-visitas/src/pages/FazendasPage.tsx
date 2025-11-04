@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Fazenda } from '../types/database';
-import { Plus, Search, MapPin, Layers } from 'lucide-react';
+import { Plus, Search, MapPin, Layers, Calendar } from 'lucide-react';
 import FazendaModal from '../components/modals/FazendaModal';
+import { Link } from 'react-router-dom';
 
 export default function FazendasPage() {
   const { organization } = useAuth();
@@ -102,7 +103,7 @@ export default function FazendasPage() {
               key={fazenda.id}
               className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow"
             >
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-4 mb-4">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                   <MapPin className="w-6 h-6 text-green-600" />
                 </div>
@@ -120,6 +121,17 @@ export default function FazendasPage() {
                     </p>
                   )}
                 </div>
+              </div>
+              
+              {/* Botão Timeline */}
+              <div className="pt-4 border-t border-gray-100">
+                <Link
+                  to={`/fazendas/${fazenda.id}/timeline`}
+                  className="flex items-center justify-center gap-2 w-full px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors"
+                >
+                  <Calendar className="w-4 h-4" />
+                  Ver Timeline de Visitas
+                </Link>
               </div>
             </div>
           ))}

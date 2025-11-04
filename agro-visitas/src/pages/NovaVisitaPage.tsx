@@ -3,14 +3,21 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { usePhotoUpload } from '../hooks/usePhotoUpload';
+import { useGeolocation, formatCoordinates } from '../hooks/useGeolocation';
+import { useOnlineStatus } from '../hooks/useOnlineStatus';
+import { useOfflineSync } from '../hooks/useOfflineSync';
+import { saveVisitaOffline } from '../lib/offline-db';
 import { Cliente, Fazenda, Talhao } from '../types/database';
-import { Camera, Upload, X, MapPin, Calendar } from 'lucide-react';
+import { Camera, Upload, X, MapPin, Calendar, Loader2, WifiOff, Cloud, CloudOff } from 'lucide-react';
 
 export default function NovaVisitaPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { organization, user } = useAuth();
   const { uploadMultiplePhotos, uploading, uploadProgress } = usePhotoUpload();
+  const { location: gpsLocation, error: gpsError, loading: gpsLoading, getCurrentLocation } = useGeolocation();
+  const { isOnline } = useOnlineStatus();
+  const { pendingCount, isSyncing, syncNow } = useOfflineSync();
 
   // Parâmetros vindos da timeline (via state)
   const { fazendaId, clienteId } = location.state || {};
@@ -43,6 +50,9 @@ export default function NovaVisitaPage() {
     safra: '',
     estagio_cultura: '',
   });
+
+  // Estado para coordenadas GPS capturadas
+  const [gpsCoords, setGpsCoords] = useState<{latitude: number; longitude: number} | null>(null);
 
   useEffect(() => {
     if (organization) {
@@ -144,6 +154,36 @@ export default function NovaVisitaPage() {
     setPhotoPreviews(prev => prev.filter((_, i) => i !== index));
   }
 
+  // Capturar GPS
+  async function handleCapturarGPS() {
+    const coords = await getCurrentLocation();
+    if (coords) {
+      setGpsCoords({
+        latitude: coords.latitude,
+        longitude: coords.longitude,
+      });
+    }
+  }
+
+  // Converter fotos para base64 (para armazenamento offline)
+  async function convertPhotosToBase64(files: File[]): Promise<Array<{file: string; fileName: string; fileSize: number}>> {
+    const promises = files.map(file => {
+      return new Promise<{file: string; fileName: string; fileSize: number}>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          resolve({
+            file: reader.result as string,
+            fileName: file.name,
+            fileSize: file.size,
+          });
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    });
+    return Promise.all(promises);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!organization || !user) {
@@ -166,6 +206,58 @@ export default function NovaVisitaPage() {
     setError('');
 
     try {
+      // ===== MODO OFFLINE: Salvar localmente =====
+      if (!isOnline) {
+        console.log('[Offline] Salvando visita localmente...');
+        
+        // Gerar ID temporário
+        const tempId = `offline-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        
+        // Converter fotos para base64
+        const photosBase64 = selectedPhotos.length > 0 
+          ? await convertPhotosToBase64(selectedPhotos)
+          : [];
+        
+        // Salvar no IndexedDB
+        await saveVisitaOffline({
+          id: tempId,
+          cliente_id: formData.cliente_id,
+          fazenda_id: formData.fazenda_id,
+          talhao_id: formData.talhao_id || undefined,
+          titulo: formData.titulo,
+          data_visita: formData.data_visita,
+          hora_inicio: formData.hora_inicio || undefined,
+          hora_fim: formData.hora_fim || undefined,
+          tipo_visita: formData.tipo_visita || undefined,
+          status: formData.status,
+          objetivo: formData.objetivo || undefined,
+          resumo: formData.resumo || undefined,
+          recomendacoes: formData.recomendacoes || undefined,
+          proximos_passos: formData.proximos_passos || undefined,
+          clima: formData.clima || undefined,
+          temperatura: formData.temperatura ? parseFloat(formData.temperatura.toString()) : undefined,
+          cultura: formData.cultura || undefined,
+          safra: formData.safra || undefined,
+          estagio_cultura: formData.estagio_cultura || undefined,
+          gpsCoords: gpsCoords || undefined,
+          photos: photosBase64,
+        });
+        
+        console.log('[Offline] Visita salva com sucesso:', tempId);
+        
+        // Redirecionar com mensagem específica de offline
+        navigate('/visitas', { 
+          state: { 
+            message: '✅ Visita salva offline! Será sincronizada quando a conexão retornar.',
+            offlineMode: true
+          } 
+        });
+        
+        setLoading(false);
+        return;
+      }
+      
+      // ===== MODO ONLINE: Salvar no Supabase diretamente =====
       // Criar visita
       const visitaData = {
         ...formData,
@@ -195,6 +287,31 @@ export default function NovaVisitaPage() {
 
       console.log('Visita criada com sucesso:', visitaCreated);
 
+      // Salvar coordenadas GPS se houver
+      if (gpsCoords) {
+        try {
+          console.log('Salvando coordenadas GPS:', gpsCoords);
+          const { error: geoError } = await supabase
+            .from('visita_geolocalizacao')
+            .insert({
+              organization_id: organization.id,
+              visita_id: visitaCreated.id,
+              latitude: gpsCoords.latitude,
+              longitude: gpsCoords.longitude,
+              tipo_ponto: 'inicio_visita',
+              created_by: user.id,
+            });
+
+          if (geoError) {
+            console.error('Erro ao salvar GPS:', geoError);
+          } else {
+            console.log('GPS salvo com sucesso');
+          }
+        } catch (geoErr) {
+          console.error('Exceção ao salvar GPS:', geoErr);
+        }
+      }
+
       // Upload de fotos se houver
       if (selectedPhotos.length > 0) {
         try {
@@ -215,7 +332,7 @@ export default function NovaVisitaPage() {
       console.log('Redirecionando para lista de visitas...');
       navigate('/visitas', { 
         state: { 
-          message: 'Visita técnica criada com sucesso!',
+          message: '✅ Visita técnica criada com sucesso!',
           visitaId: visitaCreated.id 
         } 
       });
@@ -229,12 +346,80 @@ export default function NovaVisitaPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Nova Visita Técnica</h1>
-        <p className="mt-1 text-gray-600">Registre uma nova visita técnica em propriedade rural</p>
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Nova Visita Técnica</h1>
+          <p className="mt-1 text-gray-600">Registre uma nova visita técnica em propriedade rural</p>
+        </div>
+        
+        {/* Indicadores de Status */}
+        <div className="flex items-center gap-3">
+          {/* Status Online/Offline */}
+          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium ${
+            isOnline 
+              ? 'bg-green-100 text-green-700' 
+              : 'bg-orange-100 text-orange-700'
+          }`}>
+            {isOnline ? (
+              <>
+                <Cloud className="w-4 h-4" />
+                <span>Online</span>
+              </>
+            ) : (
+              <>
+                <CloudOff className="w-4 h-4" />
+                <span>Offline</span>
+              </>
+            )}
+          </div>
+
+          {/* Contador de Visitas Pendentes */}
+          {pendingCount > 0 && (
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <WifiOff className="w-5 h-5 text-orange-600" />
+                <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {pendingCount}
+                </span>
+              </div>
+              <span className="text-sm text-gray-600">
+                {pendingCount === 1 ? '1 visita pendente' : `${pendingCount} visitas pendentes`}
+              </span>
+              {/* Botão de Sincronização Manual */}
+              {isOnline && !isSyncing && (
+                <button
+                  type="button"
+                  onClick={syncNow}
+                  className="ml-2 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors"
+                >
+                  Sincronizar
+                </button>
+              )}
+              {isSyncing && (
+                <div className="ml-2 flex items-center gap-2 text-sm text-green-600">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Sincronizando...</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Alerta de modo offline */}
+        {!isOnline && (
+          <div className="p-4 bg-orange-50 border border-orange-200 rounded-lg flex items-start gap-3">
+            <CloudOff className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <h3 className="font-medium text-orange-900">Modo Offline Ativo</h3>
+              <p className="text-sm text-orange-700 mt-1">
+                Você está sem conexão. A visita será salva localmente e sincronizada automaticamente quando a conexão retornar.
+              </p>
+            </div>
+          </div>
+        )}
+        
         {error && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
             {error}
@@ -373,6 +558,64 @@ export default function NovaVisitaPage() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
             </div>
+          </div>
+
+          {/* Seção de GPS */}
+          <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-green-600" />
+                <label className="block text-sm font-medium text-gray-700">
+                  Localização GPS da Visita
+                </label>
+              </div>
+              <button
+                type="button"
+                onClick={handleCapturarGPS}
+                disabled={gpsLoading}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm"
+              >
+                {gpsLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Capturando...
+                  </>
+                ) : (
+                  <>
+                    <MapPin className="w-4 h-4" />
+                    Capturar GPS Atual
+                  </>
+                )}
+              </button>
+            </div>
+
+            {gpsError && (
+              <div className="mb-3 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-700">
+                {gpsError}
+              </div>
+            )}
+
+            {gpsCoords && (
+              <div className="p-3 bg-white border border-green-300 rounded text-sm text-green-700">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-4 h-4" />
+                  <span>
+                    <strong>GPS capturado:</strong> {formatCoordinates(gpsCoords.latitude, gpsCoords.longitude)}
+                  </span>
+                </div>
+                {gpsLocation?.accuracy && (
+                  <p className="text-xs text-green-600 mt-1">
+                    Precisão: ±{Math.round(gpsLocation.accuracy)}m
+                  </p>
+                )}
+              </div>
+            )}
+
+            {!gpsCoords && (
+              <p className="text-xs text-gray-500">
+                💡 Dica: Capture a localização GPS para registrar onde a visita foi realizada.
+              </p>
+            )}
           </div>
         </div>
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import NetworkStatus from '../components/NetworkStatus';
+import PWAInstallPrompt from '../components/PWAInstallPrompt';
 import { 
   Home, 
   Users, 
@@ -169,6 +171,10 @@ export default function DashboardLayout() {
         <main className="p-4 lg:p-8">
           <Outlet />
         </main>
+        
+        {/* PWA e Network Status Indicators */}
+        <NetworkStatus />
+        <PWAInstallPrompt />
       </div>
     </div>
   );

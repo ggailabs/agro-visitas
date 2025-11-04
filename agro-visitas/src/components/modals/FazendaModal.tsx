@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { X, MapPin, Loader2 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
+import { useGeolocation, formatCoordinates } from '../../hooks/useGeolocation';
 import { Cliente } from '../../types/database';
 
 interface FazendaModalProps {
@@ -13,6 +14,7 @@ interface FazendaModalProps {
 
 export default function FazendaModal({ isOpen, onClose, onSuccess, editingFazenda }: FazendaModalProps) {
   const { organization, user } = useAuth();
+  const { location, error: gpsError, loading: gpsLoading, getCurrentLocation } = useGeolocation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [clientes, setClientes] = useState<Cliente[]>([]);
@@ -55,6 +57,29 @@ export default function FazendaModal({ isOpen, onClose, onSuccess, editingFazend
       console.error('Erro ao carregar clientes:', err);
     }
   }
+
+  // Capturar GPS atual
+  async function handleCapturarGPS() {
+    const coords = await getCurrentLocation();
+    if (coords) {
+      setFormData({
+        ...formData,
+        latitude: coords.latitude.toString(),
+        longitude: coords.longitude.toString(),
+      });
+    }
+  }
+
+  // Atualizar coordenadas quando GPS é capturado
+  useEffect(() => {
+    if (location && !formData.latitude && !formData.longitude) {
+      setFormData(prev => ({
+        ...prev,
+        latitude: location.latitude.toString(),
+        longitude: location.longitude.toString(),
+      }));
+    }
+  }, [location]);
 
   if (!isOpen) return null;
 
@@ -279,34 +304,83 @@ export default function FazendaModal({ isOpen, onClose, onSuccess, editingFazend
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Latitude
-              </label>
-              <input
-                type="number"
-                step="0.00000001"
-                name="latitude"
-                value={formData.latitude}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="-23.550520"
-              />
-            </div>
+            {/* Seção de GPS com botão de captura automática */}
+            <div className="md:col-span-2 bg-green-50 border border-green-200 rounded-lg p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-green-600" />
+                  <label className="block text-sm font-medium text-gray-700">
+                    Coordenadas GPS
+                  </label>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleCapturarGPS}
+                  disabled={gpsLoading}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors text-sm"
+                >
+                  {gpsLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Capturando...
+                    </>
+                  ) : (
+                    <>
+                      <MapPin className="w-4 h-4" />
+                      Capturar GPS Atual
+                    </>
+                  )}
+                </button>
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Longitude
-              </label>
-              <input
-                type="number"
-                step="0.00000001"
-                name="longitude"
-                value={formData.longitude}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="-46.633308"
-              />
+              {gpsError && (
+                <div className="mb-3 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-700">
+                  {gpsError}
+                </div>
+              )}
+
+              {location && (
+                <div className="mb-3 p-2 bg-white border border-green-300 rounded text-xs text-green-700">
+                  <strong>GPS capturado:</strong> {formatCoordinates(location.latitude, location.longitude)}
+                  {location.accuracy && ` (precisão: ±${Math.round(location.accuracy)}m)`}
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    Latitude
+                  </label>
+                  <input
+                    type="number"
+                    step="0.00000001"
+                    name="latitude"
+                    value={formData.latitude}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                    placeholder="-23.550520"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    Longitude
+                  </label>
+                  <input
+                    type="number"
+                    step="0.00000001"
+                    name="longitude"
+                    value={formData.longitude}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
+                    placeholder="-46.633308"
+                  />
+                </div>
+              </div>
+
+              <p className="mt-2 text-xs text-gray-500">
+                💡 Dica: Clique em "Capturar GPS Atual" para preencher automaticamente as coordenadas da fazenda.
+              </p>
             </div>
 
             <div className="md:col-span-2">

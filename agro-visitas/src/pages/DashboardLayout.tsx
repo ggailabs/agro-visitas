@@ -15,7 +15,8 @@ import {
   LogOut,
   Menu,
   X,
-  Sprout
+  Sprout,
+  ChevronRight
 } from 'lucide-react';
 
 export default function DashboardLayout() {
@@ -44,96 +45,83 @@ export default function DashboardLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Mobile sidebar */}
-      <div className={`fixed inset-0 z-50 lg:hidden ${sidebarOpen ? '' : 'pointer-events-none'}`}>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Mobile sidebar backdrop */}
+      <div 
+        className={`fixed inset-0 z-40 lg:hidden transition-opacity duration-300 ${
+          sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
+      >
         <div
-          className={`fixed inset-0 bg-gray-900/50 transition-opacity ${
-            sidebarOpen ? 'opacity-100' : 'opacity-0'
-          }`}
+          className="absolute inset-0 bg-gray-900/50 backdrop-blur-sm"
           onClick={() => setSidebarOpen(false)}
         />
-        <div
-          className={`fixed inset-y-0 left-0 w-72 bg-white transform transition-transform ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
-        >
-          <div className="flex items-center justify-between p-4 border-b">
+      </div>
+
+      {/* Mobile sidebar */}
+      <div 
+        className={`fixed inset-y-0 left-0 z-50 w-80 bg-white shadow-strong transform transition-transform duration-300 ease-out lg:hidden ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Mobile Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-100">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-600 rounded-lg">
+              <div className="p-2.5 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl shadow-soft">
                 <Sprout className="w-6 h-6 text-white" />
               </div>
-              <span className="font-bold text-gray-900">Agro Visitas</span>
+              <div>
+                <span className="font-bold text-gray-900 text-lg">Agro Visitas</span>
+                <p className="text-xs text-gray-500">{organization?.name || 'Sistema'}</p>
+              </div>
             </div>
-            <button onClick={() => setSidebarOpen(false)} className="p-2">
+            <button 
+              onClick={() => setSidebarOpen(false)} 
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            >
               <X className="w-6 h-6 text-gray-500" />
             </button>
           </div>
-          <nav className="p-4 space-y-1">
+
+          {/* Mobile Navigation */}
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-thin">
             {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
+              const isActive = location.pathname === item.href || location.pathname.startsWith(item.href + '/');
               return (
                 <Link
                   key={item.name}
                   to={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-xl font-medium transition-all duration-200 ${
                     isActive
-                      ? 'bg-green-50 text-green-600 font-medium'
-                      : 'text-gray-700 hover:bg-gray-50'
+                      ? 'bg-gradient-to-r from-primary-50 to-primary-100 text-primary-700 shadow-sm'
+                      : 'text-gray-700 hover:bg-gray-50 active:scale-[0.98]'
                   }`}
                 >
-                  <item.icon className="w-5 h-5" />
-                  {item.name}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-      </div>
-
-      {/* Desktop sidebar */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
-        <div className="flex flex-col flex-1 min-h-0 bg-white border-r border-gray-200">
-          <div className="flex items-center gap-3 p-6 border-b">
-            <div className="p-2 bg-green-600 rounded-lg">
-              <Sprout className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold text-gray-900">Agro Visitas</h1>
-              <p className="text-sm text-gray-500">{organization?.name || 'Sistema'}</p>
-            </div>
-          </div>
-
-          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-            {navigation.map((item) => {
-              const isActive = location.pathname === item.href;
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                    isActive
-                      ? 'bg-green-50 text-green-600 font-medium'
-                      : 'text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.name}
+                  {isActive && (
+                    <div className="absolute left-0 w-1 h-8 bg-gradient-to-b from-primary-600 to-primary-700 rounded-r-full" />
+                  )}
+                  <item.icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
+                  <span>{item.name}</span>
+                  {isActive && (
+                    <ChevronRight className="w-4 h-4 ml-auto animate-pulse" />
+                  )}
                 </Link>
               );
             })}
           </nav>
 
-          <div className="p-4 border-t">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                <span className="text-green-600 font-semibold">
+          {/* Mobile User Section */}
+          <div className="p-4 border-t border-gray-100 bg-gray-50">
+            <div className="flex items-center gap-3 mb-3 p-3 bg-white rounded-xl">
+              <div className="w-11 h-11 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-soft">
+                <span className="text-white font-bold text-lg">
                   {profile?.full_name?.charAt(0) || 'U'}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">
+                <p className="text-sm font-semibold text-gray-900 truncate">
                   {profile?.full_name || 'Usuário'}
                 </p>
                 <p className="text-xs text-gray-500 truncate">{profile?.email}</p>
@@ -141,22 +129,89 @@ export default function DashboardLayout() {
             </div>
             <button
               onClick={handleSignOut}
-              className="flex items-center gap-2 w-full px-4 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
+              className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-gray-700 hover:text-red-600 bg-white hover:bg-red-50 rounded-xl transition-all duration-200 font-medium border border-gray-200 hover:border-red-200"
             >
               <LogOut className="w-5 h-5" />
-              Sair
+              <span>Sair</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop sidebar */}
+      <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-80 lg:flex-col">
+        <div className="flex flex-col flex-1 min-h-0 bg-white border-r border-gray-200 shadow-soft">
+          {/* Desktop Header */}
+          <div className="flex items-center gap-4 p-6 border-b border-gray-100">
+            <div className="p-3 bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl shadow-soft">
+              <Sprout className="w-8 h-8 text-white" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-xl font-bold text-gray-900 truncate">Agro Visitas</h1>
+              <p className="text-sm text-gray-600 truncate">{organization?.name || 'Sistema'}</p>
+            </div>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-thin">
+            {navigation.map((item) => {
+              const isActive = location.pathname === item.href || location.pathname.startsWith(item.href + '/');
+              return (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`group relative flex items-center gap-3 px-4 py-3.5 rounded-xl font-medium transition-all duration-200 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-primary-50 to-primary-100 text-primary-700 shadow-sm'
+                      : 'text-gray-700 hover:bg-gray-50 active:scale-[0.98]'
+                  }`}
+                >
+                  {isActive && (
+                    <div className="absolute left-0 w-1 h-8 bg-gradient-to-b from-primary-600 to-primary-700 rounded-r-full" />
+                  )}
+                  <item.icon className={`w-5 h-5 transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`} />
+                  <span>{item.name}</span>
+                  {isActive && (
+                    <ChevronRight className="w-4 h-4 ml-auto animate-pulse" />
+                  )}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Desktop User Section */}
+          <div className="p-4 border-t border-gray-100 bg-gray-50">
+            <div className="flex items-center gap-3 mb-4 p-3 bg-white rounded-xl shadow-sm">
+              <div className="w-11 h-11 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-soft">
+                <span className="text-white font-bold text-lg">
+                  {profile?.full_name?.charAt(0) || 'U'}
+                </span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-gray-900 truncate">
+                  {profile?.full_name || 'Usuário'}
+                </p>
+                <p className="text-xs text-gray-500 truncate">{profile?.email}</p>
+              </div>
+            </div>
+            <button
+              onClick={handleSignOut}
+              className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-gray-700 hover:text-red-600 bg-white hover:bg-red-50 rounded-xl transition-all duration-200 font-medium border border-gray-200 hover:border-red-200"
+            >
+              <LogOut className="w-5 h-5" />
+              <span>Sair</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-72">
+      <div className="lg:pl-80">
         {/* Mobile header */}
-        <div className="sticky top-0 z-10 flex h-16 bg-white border-b lg:hidden">
+        <div className="sticky top-0 z-30 flex h-16 bg-white/80 backdrop-blur-lg border-b border-gray-200 lg:hidden shadow-sm">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="px-4 text-gray-500"
+            className="px-4 text-gray-500 hover:text-gray-700 transition-colors active:scale-95"
           >
             <Menu className="w-6 h-6" />
           </button>
@@ -168,7 +223,7 @@ export default function DashboardLayout() {
         </div>
 
         {/* Page content */}
-        <main className="p-4 lg:p-8">
+        <main className="p-4 lg:p-8 min-h-screen">
           <Outlet />
         </main>
         

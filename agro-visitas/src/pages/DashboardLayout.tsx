@@ -22,7 +22,9 @@ import {
   PanelLeft,
   Beaker,
   Bug,
-  Wheat
+  Wheat,
+  Package,
+  Cloud
 } from 'lucide-react';
 
 export default function DashboardLayout() {
@@ -65,6 +67,8 @@ export default function DashboardLayout() {
     { name: 'Visitas', href: '/visitas', icon: Calendar },
     { name: 'Analise de Solo', href: '/analise-solo', icon: Beaker },
     { name: 'Monitoramento', href: '/monitoramento', icon: Bug },
+    { name: 'Colheita', href: '/colheita', icon: Package },
+    { name: 'Clima', href: '/clima', icon: Cloud },
     { name: 'Relatorios', href: '/relatorios', icon: FileText },
     { name: 'Insights', href: '/insights', icon: TrendingUp },
   ];

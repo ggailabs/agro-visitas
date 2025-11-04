@@ -1,28 +1,49 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+
+// Páginas carregadas imediatamente (críticas)
 import LoginPage from './pages/LoginPage';
 import DashboardLayout from './pages/DashboardLayout';
 import DashboardPage from './pages/DashboardPage';
-import ClientesPage from './pages/ClientesPage';
-import VisitasPage from './pages/VisitasPage';
-import NovaVisitaPage from './pages/NovaVisitaPage';
-import VisitaDetalhesPage from './pages/VisitaDetalhesPage';
-import FazendasPage from './pages/FazendasPage';
-import TalhoesPage from './pages/TalhoesPage';
-import TimelinePage from './pages/TimelinePage';
-import RelatoriosPage from './pages/RelatoriosPage';
-import InsightsPage from './pages/InsightsPage';
-import AnaliseSoloPage from './pages/AnaliseSoloPage';
-import MonitoramentoPage from './pages/MonitoramentoPage';
+
+// Páginas com lazy loading (carregadas sob demanda)
+const ClientesPage = lazy(() => import('./pages/ClientesPage'));
+const VisitasPage = lazy(() => import('./pages/VisitasPage'));
+const NovaVisitaPage = lazy(() => import('./pages/NovaVisitaPage'));
+const VisitaDetalhesPage = lazy(() => import('./pages/VisitaDetalhesPage'));
+const FazendasPage = lazy(() => import('./pages/FazendasPage'));
+const TalhoesPage = lazy(() => import('./pages/TalhoesPage'));
+const TimelinePage = lazy(() => import('./pages/TimelinePage'));
+const RelatoriosPage = lazy(() => import('./pages/RelatoriosPage'));
+const InsightsPage = lazy(() => import('./pages/InsightsPage'));
+const AnaliseSoloPage = lazy(() => import('./pages/AnaliseSoloPage'));
+const MonitoramentoPage = lazy(() => import('./pages/MonitoramentoPage'));
+const ColheitaPage = lazy(() => import('./pages/ColheitaPage'));
+const ClimaPage = lazy(() => import('./pages/ClimaPage'));
+
+// Loading component para páginas lazy
+function PageLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-green-600 mx-auto mb-4"></div>
+        <p className="text-gray-600 font-medium">Carregando módulo...</p>
+      </div>
+    </div>
+  );
+}
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-green-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Verificando autenticação...</p>
+        </div>
       </div>
     );
   }
@@ -44,17 +65,110 @@ function AppRoutes() {
       >
         <Route index element={<Navigate to="/dashboard" />} />
         <Route path="dashboard" element={<DashboardPage />} />
-        <Route path="clientes" element={<ClientesPage />} />
-        <Route path="fazendas" element={<FazendasPage />} />
-        <Route path="fazendas/:id/timeline" element={<TimelinePage />} />
-        <Route path="talhoes" element={<TalhoesPage />} />
-        <Route path="analise-solo" element={<AnaliseSoloPage />} />
-        <Route path="monitoramento" element={<MonitoramentoPage />} />
-        <Route path="visitas" element={<VisitasPage />} />
-        <Route path="visitas/nova" element={<NovaVisitaPage />} />
-        <Route path="visitas/:id" element={<VisitaDetalhesPage />} />
-        <Route path="relatorios" element={<RelatoriosPage />} />
-        <Route path="insights" element={<InsightsPage />} />
+        <Route 
+          path="clientes" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <ClientesPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="fazendas" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <FazendasPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="fazendas/:id/timeline" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <TimelinePage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="talhoes" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <TalhoesPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="analise-solo" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <AnaliseSoloPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="monitoramento" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <MonitoramentoPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="colheita" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <ColheitaPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="clima" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <ClimaPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="visitas" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <VisitasPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="visitas/nova" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <NovaVisitaPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="visitas/:id" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <VisitaDetalhesPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="relatorios" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <RelatoriosPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="insights" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <InsightsPage />
+            </Suspense>
+          } 
+        />
       </Route>
     </Routes>
   );

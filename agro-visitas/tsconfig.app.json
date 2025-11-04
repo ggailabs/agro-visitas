@@ -34,7 +34,9 @@
     "noImplicitReturns": false,
     "noImplicitThis": false,
     "noPropertyAccessFromIndexSignature": false,
-    "noUncheckedSideEffectImports": false
+    "noUncheckedSideEffectImports": false,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true
   },
   "include": [
     "src"

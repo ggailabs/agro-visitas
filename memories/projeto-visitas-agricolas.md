@@ -431,6 +431,19 @@ Data: 2025-11-05 00:18
 ✅ Build: 13.45s
 ✅ Deploy: https://ba3atvc8mpmf.space.minimax.io
 
+**CORRECAO: Sobreposicao do Toggle Resolvida**
+Data: 2025-11-05 03:57
+PROBLEMA: Botao toggle sobrepondo logo no estado colapsado
+SOLUCAO IMPLEMENTADA:
+✅ Removido posicionamento absoluto problematico (-right-3)
+✅ Criada secao separada para botao quando colapsado
+✅ Botao agora em area propria abaixo do logo
+✅ Logo centralizado verticalmente (flex-col) no estado colapsado
+✅ Espacamento adequado entre logo e botao
+✅ Layout limpo sem sobreposicoes
+✅ Build: 10.86s
+✅ Deploy: https://83n1hlglo8dg.space.minimax.io
+
 ### Score Final UI/UX:
 - Design Visual: 9/10 (+50%)
 - Micro-interações: 9/10 (+125%)

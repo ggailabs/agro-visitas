@@ -179,7 +179,7 @@ export default function DashboardLayout() {
           <div className="relative flex items-center justify-between p-6 border-b border-gray-100 transition-all duration-300">
             {/* Logo e Nome */}
             <div className={`flex items-center gap-4 transition-all duration-300 ${
-              sidebarCollapsed ? 'justify-center w-full' : 'flex-1'
+              sidebarCollapsed ? 'flex-col items-center justify-center w-full' : 'flex-1'
             }`}>
               <div className="p-3 bg-gradient-to-br from-primary-600 to-primary-700 rounded-2xl shadow-soft flex-shrink-0">
                 <Sprout className="w-8 h-8 text-white" />
@@ -192,7 +192,7 @@ export default function DashboardLayout() {
               )}
             </div>
 
-            {/* Toggle Button - Sempre visivel ao lado do logo */}
+            {/* Toggle Button - Sempre visivel ao lado do logo quando expandido */}
             {!sidebarCollapsed && (
               <button
                 onClick={toggleCollapse}
@@ -202,18 +202,20 @@ export default function DashboardLayout() {
                 <PanelLeftClose className="w-5 h-5 text-gray-600 group-hover:text-primary-600 transition-colors" />
               </button>
             )}
+          </div>
 
-            {/* Toggle Button para estado colapsado - posicionado sobre a barra */}
-            {sidebarCollapsed && (
+          {/* Toggle Button para estado colapsado - posicionado após o header */}
+          {sidebarCollapsed && (
+            <div className="relative px-4 py-3 border-b border-gray-100 flex justify-center">
               <button
                 onClick={toggleCollapse}
-                className="absolute -right-3 top-1/2 -translate-y-1/2 group p-2 bg-white hover:bg-primary-50 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95 shadow-soft border border-gray-200 hover:border-primary-300"
+                className="group p-2 bg-white hover:bg-primary-50 rounded-xl transition-all duration-200 hover:scale-110 active:scale-95 shadow-soft border border-gray-200 hover:border-primary-300"
                 title="Expandir sidebar"
               >
                 <PanelLeft className="w-4 h-4 text-gray-600 group-hover:text-primary-600 transition-colors" />
               </button>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Desktop Navigation */}
           <nav className="flex-1 p-4 space-y-1 overflow-y-auto scrollbar-thin">

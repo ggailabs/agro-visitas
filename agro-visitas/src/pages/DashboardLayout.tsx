@@ -19,7 +19,10 @@ import {
   ChevronRight,
   ChevronLeft,
   PanelLeftClose,
-  PanelLeft
+  PanelLeft,
+  Beaker,
+  Bug,
+  Wheat
 } from 'lucide-react';
 
 export default function DashboardLayout() {
@@ -60,6 +63,8 @@ export default function DashboardLayout() {
     { name: 'Fazendas', href: '/fazendas', icon: MapPin },
     { name: 'Talhoes', href: '/talhoes', icon: Grid3x3 },
     { name: 'Visitas', href: '/visitas', icon: Calendar },
+    { name: 'Analise de Solo', href: '/analise-solo', icon: Beaker },
+    { name: 'Monitoramento', href: '/monitoramento', icon: Bug },
     { name: 'Relatorios', href: '/relatorios', icon: FileText },
     { name: 'Insights', href: '/insights', icon: TrendingUp },
   ];

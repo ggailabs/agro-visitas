@@ -13,6 +13,8 @@ import TalhoesPage from './pages/TalhoesPage';
 import TimelinePage from './pages/TimelinePage';
 import RelatoriosPage from './pages/RelatoriosPage';
 import InsightsPage from './pages/InsightsPage';
+import AnaliseSoloPage from './pages/AnaliseSoloPage';
+import MonitoramentoPage from './pages/MonitoramentoPage';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
@@ -46,6 +48,8 @@ function AppRoutes() {
         <Route path="fazendas" element={<FazendasPage />} />
         <Route path="fazendas/:id/timeline" element={<TimelinePage />} />
         <Route path="talhoes" element={<TalhoesPage />} />
+        <Route path="analise-solo" element={<AnaliseSoloPage />} />
+        <Route path="monitoramento" element={<MonitoramentoPage />} />
         <Route path="visitas" element={<VisitasPage />} />
         <Route path="visitas/nova" element={<NovaVisitaPage />} />
         <Route path="visitas/:id" element={<VisitaDetalhesPage />} />

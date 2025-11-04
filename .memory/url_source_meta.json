@@ -1,0 +1,72 @@
+{
+  "_source_id": 11,
+  "sources": {
+    "Análise de Solo em Áreas Agrícolas Brasileiras": {
+      "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1042994/1/Doc206.pdf": {
+        "id": 1,
+        "publisher": "Embrapa Tabuleiros Costeiros",
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1042994/1/Doc206.pdf",
+        "title": "Guia Prático para Interpretação de Resultados de Análises de Solo",
+        "info": "Parâmetros físico-químicos (pH, CTC, saturação de bases), macronutrientes (K, Ca, Mg), métodos de calagem e interpretação de resultados"
+      },
+      "https://lab.iac.sp.gov.br/Publicacao/boletim_tecnico_analise_granulometrica_v12Mai2021.pdf": {
+        "id": 2,
+        "publisher": "Instituto Agronômico de Campinas (IAC)",
+        "url": "https://lab.iac.sp.gov.br/Publicacao/boletim_tecnico_analise_granulometrica_v12Mai2021.pdf",
+        "title": "Métodos de Análise Física de Solos - Análise Granulométrica",
+        "info": "Métodos analíticos para textura do solo, determinação de argila/silte/areia, análise granulométrica, unidades de medida e classificação textural"
+      },
+      "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1176428/1/COSTA-MAGNA-CIR-TEC-145.pdf": {
+        "id": 3,
+        "publisher": "Embrapa Algodão",
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1176428/1/COSTA-MAGNA-CIR-TEC-145.pdf",
+        "title": "Acidez do Solo e Calagem",
+        "info": "Valores ideais de pH para diferentes culturas, macronutrientes e micronutrientes, calagem, CTC, interpretação de resultados por cultura agrícola"
+      },
+      "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1085209/1/ManualdeMetodosdeAnalisedeSolo2017.pdf": {
+        "id": 4,
+        "publisher": "Embrapa Solos",
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1085209/1/ManualdeMetodosdeAnalisedeSolo2017.pdf",
+        "title": "Manual de Métodos de Análise de Solo",
+        "info": "Manual completo com métodos de análise física, química e mineralógica do solo"
+      },
+      "https://biblioteca.incaper.es.gov.br/digital/bitstream/item/40/1/Guia-interpretacao-analise-solo.pdf": {
+        "id": 5,
+        "publisher": "Incaper",
+        "url": "https://biblioteca.incaper.es.gov.br/digital/bitstream/item/40/1/Guia-interpretacao-analise-solo.pdf",
+        "title": "Guia de Interpretação de Análise de Solo e Foliar",
+        "info": "Parâmetros de análise de solo, interpretação de resultados e recomendações para diferentes culturas"
+      },
+      "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1141119/1/Doc-370-Dario.pdf": {
+        "id": 6,
+        "publisher": "Embrapa Cerrados",
+        "url": "https://www.infoteca.cnptia.embrapa.br/infoteca/bitstream/doc/1141119/1/Doc-370-Dario.pdf",
+        "title": "Organização de Dados de Pesquisa no PostgreSQL",
+        "info": "Estrutura de banco de dados PostgreSQL para dados de pesquisa, organização de experimentos e análise estatística em R"
+      },
+      "https://www.confea.org.br/midias/uploads-imce/Contecc2019/Agronomia/SISTEMA%20DE%20GERENCIAMENTO%20DE%20DADOS%20LABORATORIAIS%20E%20EMISS%C3%83O%20DE%20RELATORIOS%20TECNICOS%20DE%20ANALISES%20DE%20SOLO.pdf": {
+        "id": 7,
+        "publisher": "Conféa",
+        "url": "https://www.confea.org.br/midias/uploads-imce/Contecc2019/Agronomia/SISTEMA%20DE%20GERENCIAMENTO%20DE%20DADOS%20LABORATORIAIS%20E%20EMISS%C3%83O%20DE%20RELATORIOS%20TECNICOS%20DE%20ANALISES%20DE%20SOLO.pdf",
+        "title": "Sistema de Gerenciamento de Dados Laboratoriais - LIMS para Análises de Solo",
+        "info": "Sistema completo de banco de dados para laboratórios de análise de solo, estrutura de tabelas e campos técnicos para química e física do solo"
+      }
+    },
+    "Estruturas Hierárquicas de Dados Agrícolas": {
+      "https://medium.com/analytics-vidhya/sql-part-1-using-sql-to-build-a-real-life-farm-management-database-8e87a760d2e": {
+        "id": 11,
+        "publisher": "Medium - Analytics Vidhya",
+        "url": "https://medium.com/analytics-vidhya/sql-part-1-using-sql-to-build-a-real-life-farm-management-database-8e87a760d2e",
+        "title": "SQL Farm Management Database Implementation",
+        "info": "Esquema SQL para banco de dados de gestão de fazendas com estrutura de tabelas, relacionamentos e operações usando Microsoft SQL Server"
+      },
+      "https://www.dbwatch.com/blog/database-scaling-best-practices/": {
+        "id": 10,
+        "publisher": "dbWatch",
+        "url": "https://www.dbwatch.com/blog/database-scaling-best-practices/",
+        "title": "Database Scaling Best Practices",
+        "info": "Melhores práticas de escalabilidade de bancos de dados, conectividade flexível, monitoramento proativo e estratégias de gestão em múltiplas instâncias para sistemas agrícolas"
+      }
+    }
+  }
+}

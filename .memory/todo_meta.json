@@ -3,29 +3,29 @@
     "Coordinator": {
       "1": {
         "id": "1",
-        "content": "Analisar campos necessários por área técnica",
-        "details": "1. Definir campos para Análise de Solo (pH, macro/micronutrientes, textura, etc). 2. Mapear campos para Relatórios Técnicos (recomendações, observações, procedimentos). 3. Identificar campos para Monitoramento de Cultura (estágio fenológico, pragas, doenças, etc). 4. Definir campos para Colheita/Produção (dados quantitativos, qualidade, etc). 5. Mapear campos para Eventos Climáticos (chuva, temperatura, geada, etc).",
-        "status": "pending",
+        "content": "ETAPA 1: Análise de campos técnicos específicos e estrutura de banco",
+        "details": "• Pesquisar campos técnicos para: Análise de Solo (pH, MO, CTC, macronutrientes, micronutrientes), Monitoramento de Cultura (fenologia, pragas, doenças), Relatórios Técnicos, Colheita/Produção, Eventos Climáticos\n• Analisar modelo Chandra OCR para extração automatizada\n• Redesenhar schema do banco de dados PostgreSQL para áreas técnicas\n• Planejar estruturas de dados hierárquicas",
+        "status": "completed",
         "priority": "high"
       },
       "2": {
         "id": "2",
-        "content": "Redesign da estrutura do banco de dados",
-        "details": "1. Criar tabelas especializadas (analise_solo, relatorio_tecnico, monitoramento_cultura, etc). 2. Atualizar relacionamentos entre tabelas. 3. Implementar campos customizáveis para diferentes tipos de dados. 4. Criar migração de dados existentes. 5. Atualizar edge functions para novos tipos de dados.",
-        "status": "pending",
+        "content": "ETAPA 2: Implementar interfaces especializadas por área",
+        "details": "✅ INTERFACES IMPLEMENTADAS:\n• 🧪 Análise de Solo (/analise-solo) - Visualização de análises, cards com status colorido\n• 🐛 Monitoramento (/monitoramento) - Timeline de inspeções, estágios fenológicos, pragas/doenças\n• 🔄 Navegação atualizada no sidebar\n\n🔄 EM PROGRESSO:\n• Implementação do schema completo do banco de dados PostgreSQL\n• Sistema Chandra OCR para leitura de documentos\n• Modais para entrada de dados\n• Conexão com dados reais (currently mock data)\n• Sistema de Relatórios Técnicos\n• Módulo de Colheita/Produção\n• Dashboard de Eventos Climáticos",
+        "status": "in_progress",
         "priority": "high"
       },
       "3": {
         "id": "3",
-        "content": "Implementar interfaces específicas por área",
-        "details": "1. Criar formulários especializados para cada tipo de análise. 2. Implementar componentes de entrada de dados técnicos. 3. Desenvolver visualizações específicas (gráficos, tabelas, indicadores). 4. Integrar com timeline existente. 5. Criar templates de relatórios por área.",
+        "content": "ETAPA 3: Expandir sistema de relatórios e insights IA",
+        "details": "• Geração automática de relatórios técnicos\n• Relatórios consolidados por fazenda\n• Análises de tendências e insights\n• Recomendações baseadas em dados históricos\n• Sistema de alertas e notificações",
         "status": "pending",
         "priority": "medium"
       },
       "4": {
         "id": "4",
-        "content": "Expandir sistema de relatórios e insights IA",
-        "details": "1. Integrar análise de solo com recomendações IA. 2. Gerar insights baseados em monitoramento de cultura. 3. Criar relatórios técnicos automáticos. 4. Implementar alertas baseados em dados. 5. Desenvolver dashboard especializado.",
+        "content": "ETAPA 4: Finalização e otimização profissional",
+        "details": "• Testes finais de todas as funcionalidades\n• Otimização de performance\n• Documentação técnica completa\n• Preparação para produção\n• Deploy final da versão expandida",
         "status": "pending",
         "priority": "medium"
       }

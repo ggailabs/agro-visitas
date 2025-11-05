@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Cliente } from '../types/database';
-import { Plus, Search, User, Phone, Mail, MapPin } from 'lucide-react';
+import { Plus, Search, User, Phone, Mail, MapPin, Edit } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ClienteModal from '../components/modals/ClienteModal';
 
@@ -12,6 +12,7 @@ export default function ClientesPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingCliente, setEditingCliente] = useState<Cliente | null>(null);
 
   useEffect(() => {
     if (organization) {
@@ -61,7 +62,10 @@ export default function ClientesPage() {
           <p className="mt-1 text-gray-600">Gestão de produtores rurais</p>
         </div>
         <button 
-          onClick={() => setModalOpen(true)}
+          onClick={() => {
+            setEditingCliente(null);
+            setModalOpen(true);
+          }}
           className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
         >
           <Plus className="w-5 h-5" />
@@ -101,9 +105,8 @@ export default function ClientesPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredClientes.map((cliente) => (
-            <Link
+            <div
               key={cliente.id}
-              to={`/clientes/${cliente.id}`}
               className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start gap-4">
@@ -131,19 +134,43 @@ export default function ClientesPage() {
                     </p>
                   )}
                 </div>
+                <Link
+                  to={`/clientes/${cliente.id}`}
+                  className="flex-shrink-0 p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  title="Ver detalhes do cliente"
+                >
+                  <User className="w-4 h-4" />
+                </Link>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setEditingCliente(cliente);
+                    setModalOpen(true);
+                  }}
+                  className="flex-shrink-0 p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  title="Editar cliente"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}
 
       <ClienteModal 
         isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={() => {
+          setModalOpen(false);
+          setEditingCliente(null);
+        }}
         onSuccess={() => {
           loadClientes();
           setModalOpen(false);
+          setEditingCliente(null);
         }}
+        editingCliente={editingCliente}
       />
     </div>
   );

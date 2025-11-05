@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Talhao, Fazenda } from '../types/database';
-import { Plus, Search, Grid3x3, Layers, MapPin } from 'lucide-react';
+import { Plus, Search, Grid3x3, Layers, MapPin, Edit } from 'lucide-react';
 import TalhaoModal from '../components/modals/TalhaoModal';
 
 export default function TalhoesPage() {
@@ -12,6 +12,7 @@ export default function TalhoesPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingTalhao, setEditingTalhao] = useState<Talhao | null>(null);
 
   useEffect(() => {
     if (organization) {
@@ -80,7 +81,10 @@ export default function TalhoesPage() {
           <p className="mt-1 text-gray-600">Gestão de talhões e divisões das fazendas</p>
         </div>
         <button 
-          onClick={() => setModalOpen(true)}
+          onClick={() => {
+            setEditingTalhao(null);
+            setModalOpen(true);
+          }}
           className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
         >
           <Plus className="w-5 h-5" />
@@ -167,6 +171,18 @@ export default function TalhoesPage() {
                     </p>
                   )}
                 </div>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setEditingTalhao(talhao);
+                    setModalOpen(true);
+                  }}
+                  className="flex-shrink-0 p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  title="Editar talhão"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
               </div>
             </div>
           ))}
@@ -175,11 +191,16 @@ export default function TalhoesPage() {
 
       <TalhaoModal 
         isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={() => {
+          setModalOpen(false);
+          setEditingTalhao(null);
+        }}
         onSuccess={() => {
           loadData();
           setModalOpen(false);
+          setEditingTalhao(null);
         }}
+        editingTalhao={editingTalhao}
       />
     </div>
   );

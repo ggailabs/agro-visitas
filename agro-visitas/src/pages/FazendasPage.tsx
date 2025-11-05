@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Fazenda } from '../types/database';
-import { Plus, Search, MapPin, Layers, Calendar } from 'lucide-react';
+import { Plus, Search, MapPin, Layers, Calendar, Edit } from 'lucide-react';
 import FazendaModal from '../components/modals/FazendaModal';
 import { Link } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ export default function FazendasPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [editingFazenda, setEditingFazenda] = useState<Fazenda | null>(null);
 
   useEffect(() => {
     if (organization) {
@@ -61,7 +62,10 @@ export default function FazendasPage() {
           <p className="mt-1 text-gray-600">Gestão de propriedades rurais</p>
         </div>
         <button 
-          onClick={() => setModalOpen(true)}
+          onClick={() => {
+            setEditingFazenda(null);
+            setModalOpen(true);
+          }}
           className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
         >
           <Plus className="w-5 h-5" />
@@ -121,6 +125,18 @@ export default function FazendasPage() {
                     </p>
                   )}
                 </div>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setEditingFazenda(fazenda);
+                    setModalOpen(true);
+                  }}
+                  className="flex-shrink-0 p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                  title="Editar fazenda"
+                >
+                  <Edit className="w-4 h-4" />
+                </button>
               </div>
               
               {/* Botão Timeline */}
@@ -140,11 +156,16 @@ export default function FazendasPage() {
 
       <FazendaModal 
         isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={() => {
+          setModalOpen(false);
+          setEditingFazenda(null);
+        }}
         onSuccess={() => {
           loadFazendas();
           setModalOpen(false);
+          setEditingFazenda(null);
         }}
+        editingFazenda={editingFazenda}
       />
     </div>
   );

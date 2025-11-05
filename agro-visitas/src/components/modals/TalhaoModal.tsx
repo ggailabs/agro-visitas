@@ -36,6 +36,22 @@ export default function TalhaoModal({ isOpen, onClose, onSuccess, editingTalhao 
     }
   }, [isOpen, organization]);
 
+  // Atualizar formData quando editingTalhao muda
+  useEffect(() => {
+    setFormData({
+      fazenda_id: editingTalhao?.fazenda_id || '',
+      nome: editingTalhao?.nome || '',
+      area: editingTalhao?.area?.toString() || '',
+      unidade_area: editingTalhao?.unidade_area || 'hectares',
+      cultura_atual: editingTalhao?.cultura_atual || '',
+      safra_atual: editingTalhao?.safra_atual || '',
+      tipo_solo: editingTalhao?.tipo_solo || '',
+      topografia: editingTalhao?.topografia || '',
+      sistema_irrigacao: editingTalhao?.sistema_irrigacao || '',
+      observacoes: editingTalhao?.observacoes || '',
+    });
+  }, [editingTalhao]);
+
   async function loadFazendas() {
     if (!organization) return;
 

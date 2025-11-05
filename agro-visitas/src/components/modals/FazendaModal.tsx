@@ -40,6 +40,24 @@ export default function FazendaModal({ isOpen, onClose, onSuccess, editingFazend
     }
   }, [isOpen, organization]);
 
+  // Atualizar formData quando editingFazenda muda
+  useEffect(() => {
+    setFormData({
+      cliente_id: editingFazenda?.cliente_id || '',
+      nome: editingFazenda?.nome || '',
+      area_total: editingFazenda?.area_total?.toString() || '',
+      unidade_area: editingFazenda?.unidade_area || 'hectares',
+      endereco: editingFazenda?.endereco || '',
+      cidade: editingFazenda?.cidade || '',
+      estado: editingFazenda?.estado || '',
+      cep: editingFazenda?.cep || '',
+      latitude: editingFazenda?.latitude?.toString() || '',
+      longitude: editingFazenda?.longitude?.toString() || '',
+      tipo_propriedade: editingFazenda?.tipo_propriedade || '',
+      observacoes: editingFazenda?.observacoes || '',
+    });
+  }, [editingFazenda]);
+
   async function loadClientes() {
     if (!organization) return;
 

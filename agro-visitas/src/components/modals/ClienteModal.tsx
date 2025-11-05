@@ -28,6 +28,22 @@ export default function ClienteModal({ isOpen, onClose, onSuccess, editingClient
     observacoes: editingCliente?.observacoes || '',
   });
 
+  // Atualizar formData quando editingCliente muda
+  React.useEffect(() => {
+    setFormData({
+      nome: editingCliente?.nome || '',
+      cpf_cnpj: editingCliente?.cpf_cnpj || '',
+      email: editingCliente?.email || '',
+      telefone: editingCliente?.telefone || '',
+      whatsapp: editingCliente?.whatsapp || '',
+      endereco: editingCliente?.endereco || '',
+      cidade: editingCliente?.cidade || '',
+      estado: editingCliente?.estado || '',
+      cep: editingCliente?.cep || '',
+      observacoes: editingCliente?.observacoes || '',
+    });
+  }, [editingCliente]);
+
   if (!isOpen) return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {

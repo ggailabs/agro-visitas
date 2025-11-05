@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Talhao, Fazenda } from '../types/database';
-import { Plus, Search, Grid3x3, Layers, MapPin, Edit } from 'lucide-react';
+import { Plus, Search, Grid3x3, Layers, MapPin, Edit, Eye } from 'lucide-react';
 import TalhaoModal from '../components/modals/TalhaoModal';
 
 export default function TalhoesPage() {
@@ -171,6 +171,13 @@ export default function TalhoesPage() {
                     </p>
                   )}
                 </div>
+                <Link
+                  to={`/talhoes/${talhao.id}`}
+                  className="flex-shrink-0 p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                  title="Ver detalhes do talhão"
+                >
+                  <Eye className="w-4 h-4" />
+                </Link>
                 <button
                   onClick={(e) => {
                     e.preventDefault();

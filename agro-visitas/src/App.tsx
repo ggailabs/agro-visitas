@@ -9,11 +9,14 @@ import DashboardPage from './pages/DashboardPage';
 
 // Páginas com lazy loading (carregadas sob demanda)
 const ClientesPage = lazy(() => import('./pages/ClientesPage'));
+const ClienteDetalhesPage = lazy(() => import('./pages/ClienteDetalhesPage'));
 const VisitasPage = lazy(() => import('./pages/VisitasPage'));
 const NovaVisitaPage = lazy(() => import('./pages/NovaVisitaPage'));
 const VisitaDetalhesPage = lazy(() => import('./pages/VisitaDetalhesPage'));
 const FazendasPage = lazy(() => import('./pages/FazendasPage'));
+const FazendaDetalhesPage = lazy(() => import('./pages/FazendaDetalhesPage'));
 const TalhoesPage = lazy(() => import('./pages/TalhoesPage'));
+const TalhaoDetalhesPage = lazy(() => import('./pages/TalhaoDetalhesPage'));
 const TimelinePage = lazy(() => import('./pages/TimelinePage'));
 const RelatoriosPage = lazy(() => import('./pages/RelatoriosPage'));
 const InsightsPage = lazy(() => import('./pages/InsightsPage'));
@@ -74,10 +77,26 @@ function AppRoutes() {
           } 
         />
         <Route 
+          path="clientes/:id" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <ClienteDetalhesPage />
+            </Suspense>
+          } 
+        />
+        <Route 
           path="fazendas" 
           element={
             <Suspense fallback={<PageLoader />}>
               <FazendasPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="fazendas/:id" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <FazendaDetalhesPage />
             </Suspense>
           } 
         />
@@ -94,6 +113,14 @@ function AppRoutes() {
           element={
             <Suspense fallback={<PageLoader />}>
               <TalhoesPage />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="talhoes/:id" 
+          element={
+            <Suspense fallback={<PageLoader />}>
+              <TalhaoDetalhesPage />
             </Suspense>
           } 
         />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Fazenda } from '../types/database';
-import { Plus, Search, MapPin, Layers, Calendar, Edit } from 'lucide-react';
+import { Plus, Search, MapPin, Layers, Calendar, Edit, Eye } from 'lucide-react';
 import FazendaModal from '../components/modals/FazendaModal';
 import { Link } from 'react-router-dom';
 
@@ -125,6 +125,13 @@ export default function FazendasPage() {
                     </p>
                   )}
                 </div>
+                <Link
+                  to={`/fazendas/${fazenda.id}`}
+                  className="flex-shrink-0 p-2 text-gray-400 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                  title="Ver detalhes da fazenda"
+                >
+                  <Eye className="w-4 h-4" />
+                </Link>
                 <button
                   onClick={(e) => {
                     e.preventDefault();
